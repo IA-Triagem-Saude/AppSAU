@@ -1,17 +1,71 @@
+<!--
+
+|   |  -------  |\    /|  |
+|   |     |     | \  / |  |
+|---|     |     |  \/  |  |
+|   |     |     |      |  |
+|   |     |     |      |  L_____
+
+Documento HTML principal do AppSAU.
+Esta página contém a interface gráfica da ferramenta de triagem em saúde -->
+
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Triagem de Saúde</title>
+<!-- ............................................. --> 
 
+<!-- Cabeçalho da página.
+
+	Contém configurações gerais do documento:
+	- Codificação UTF-8 para caracteres especiais;
+	- Configuração de responsividade para dispositivos móveis;
+	- Título exibido na aba do navegador -->
+<head>
+<!-- ............................................. --> 
+
+
+<!-- Charset
+	Permite exibir corretamente acentos e caracteres especiais -->
+
+<meta charset="UTF-8">
+<!-- ............................................. --> 
+
+
+<!-- Viewport
+	Configura a adaptação automática da página para celulares e tablets,
+	permitindo que a interface seja responsiva -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ............................................. --> 
+
+
+<!-- Título exibido na aba do navegador -->
+<title>Triagem de Saúde</title>
+<!-- ............................................. --> 
+
+
+<!-- Início do CSS
+
+  ___  ___  ___ 
+ / __ / __ / __|
+
+| (__ \__ \ __ \
+ \___ |___/ ___/
+
+	Folha de estilos (CSS).
+	Define a aparência visual da aplicação,
+	incluindo cores, tamanhos, espaçamentos e responsividade -->
 <style>
+
+
+	/* Configuração visual geral da página */
 body {
   font-family: Arial;
   background: #eef2f7;
   text-align: center;
 }
 
+	/* Container principal da aplicação.
+	Cria uma área centralizada onde todos os elementos
+	da triagem serão exibidos */
 .container {
   background: white;
   padding: 20px;
@@ -28,6 +82,8 @@ body {
   color: #333;
 }
 
+	/* Texto auxiliar exibido abaixo de alguns campos,
+	fornecendo exemplos de preenchimento */
 .ajuda {
   display: block;
   margin-top: 4px;
@@ -36,16 +92,25 @@ body {
   font-style: italic;
 }
 
+
+	/* Agrupa elementos relacionados, como um campo
+	e sua respectiva explicação */
 .campo {
   margin-bottom: 12px;
 }
 
+
+	/* Define a aparência dos campos de entrada
+	e das listas de seleção */
 input, select {
   width: 90%;
   padding: 8px;
   margin: 5px;
 }
 
+
+	/* Botão responsável por iniciar a análise
+	dos dados informados pelo usuário */
 button {
   padding: 10px;
   width: 95%;
@@ -55,12 +120,18 @@ button {
   border-radius: 5px;
 }
 
+
+	/* Área onde será exibido o resultado final
+	da classificação realizada pela IA */
 #resultado {
   margin-top: 10px;
   font-size: 18px;
   font-weight: bold;
 }
 
+
+	/* Área destinada à apresentação de observações
+	e orientações complementares ao resultado */
 #explicacao {
   font-size: 14px;
 }
@@ -71,11 +142,15 @@ button {
   border-top:1px solid #ddd;
 }
 
+
+	/* Configurações visuais do rodapé da página */
 .rodape{
   text-align:center;
   margin-top:8px;
 }
 
+	/* Define o tamanho da logomarca do AppSAU
+	exibida no rodapé */
 .logo-rodape{
   width:120px;
   max-width:70%;
@@ -87,6 +162,11 @@ button {
   margin-top:8px;
 }
 
+
+	/* Painel destinado à Explainable AI (XAI).
+	Apresenta informações detalhadas sobre o
+	funcionamento da classificação realizada
+	pelo algoritmo KNN */
 #painelIA{
   margin-top:15px;
   padding:10px;
@@ -95,12 +175,19 @@ button {
   border-radius:8px;
 }
 
+
+	/* Área onde serão exibidos os detalhes da análise,
+	incluindo vizinhos mais próximos, distâncias e votação */
 #detalhesIA{
   font-size:13px;
   line-height:1.5;
 }
 
+/* Fim da folha de estilos */
 </style>
+/* ....................... */
+
+
 </head>
 
 <body>
@@ -165,12 +252,23 @@ button {
 
  </div>
 
+
+<!-- Botão responsável por iniciar a análise dos dados
+	informados pelo usuário -->
 <button id="btn">Classificar</button>
 
+
+<!-- Áreas destinadas à apresentação do resultado da classificação
+e das orientações complementares ao usuário -->
 <div id="resultado"></div>
 <div id="explicacao"></div>
 
-<!-- Para mostrar os resultados "por trás da análise" -->
+
+<!-- Para mostrar os resultados "por trás da análise" 
+	Painel de Explainable AI (XAI).
+
+	Exibe informações detalhadas sobre o processo de classificação,
+	incluindo vizinhos mais próximos, distâncias calculadas e votação -->
 
 <details id="painelIA" style="margin-top:15px; text-align:left;">
   <summary style="cursor:pointer; font-weight:bold;">
@@ -200,12 +298,38 @@ button {
 
 </div>
 
-<script>
+
+<!-- 
+========================================================
+
+                    APP SAU
+
+Sistema de Triagem em Saúde
+Baseado em Machine Learning (KNN)
+
+Responsáveis:
+Prof. Jeferson Rafael Bueno
+Profa. Rovana Kinas
+
+Versão: 2.1
+Ano: 2026
+
+========================================================
+
+	Início da implementação em JavaScript.
+
+	Nesta seção encontram-se:
+	- Base de referência;
+	- Normalização Min-Max;
+	- Distância Euclidiana;
+	- Algoritmo KNN;
+	- Explainable AI (XAI);
+	- Classificação do risco.
+========================================================
+-->
+<script> 				    /* início */
 
 /*
-Projeto: App SAU
-Responsável: Prof. Jeferson Rafael Bueno & Profa. Rovana Kinas
-
 	Explicação sobre o KNN:
 O sistema procura, dentro de sua base de dados, as três pessoas mais parecidas com o usuário (K = 3). Essa comparação é realizada por meio da distância euclidiana, calculada a partir dos dados normalizados, permitindo medir o grau de semelhança entre os perfis.
 
@@ -547,7 +671,7 @@ function classificar(){
  O risco final será determinado pela votação majoritária
  entre os K vizinhos mais próximos.
 */
-var detalhesIA =
+var detalhesIA = 
   "<b>🔍 Explainable AI (XAI) – Inteligência Artificial Explicável</b><br><br>" +
 
   "A Inteligência Artificial desenvolvida no AppSAU incorpora princípios de Explainable AI (XAI), permitindo visualizar os perfis mais semelhantes encontrados, as distâncias calculadas e o processo de votação utilizado pelo algoritmo KNN para gerar a classificação final.<br><br>" +
