@@ -310,7 +310,7 @@ Responsáveis:
 Prof. Jeferson Rafael Bueno
 Profa. Rovana Kinas
 
-Versão: 2.1
+Versão: Junho
 Ano: 2026
 
 ========================================================
@@ -330,16 +330,11 @@ Ano: 2026
 
 /*
 	Explicação sobre o KNN:
-O sistema procura, dentro de sua base de dados, as três pessoas mais parecidas com o usuário (K = 3). 
-Essa comparação é realizada por meio da distância euclidiana, calculada a partir dos dados normalizados, 
-permitindo medir o grau de semelhança entre os perfis.
+O sistema procura, dentro de sua base de dados, as três pessoas mais parecidas com o usuário (K = 3). Essa comparação é realizada por meio da distância euclidiana, calculada a partir dos dados normalizados, permitindo medir o grau de semelhança entre os perfis.
 
-Em seguida, o algoritmo seleciona os três perfis mais próximos (NN – Nearest Neighbors, ou "vizinhos mais próximos") 
-e verifica a classificação atribuída a cada um deles (baixo, médio ou alto risco).
+Em seguida, o algoritmo seleciona os três perfis mais próximos (NN – Nearest Neighbors, ou "vizinhos mais próximos") e verifica a classificação atribuída a cada um deles (baixo, médio ou alto risco).
 
-A classificação final do usuário é determinada por votação majoritária. 
-Por exemplo, se dois dos três vizinhos mais próximos forem classificados como médio risco, 
-o usuário também será classificado como médio risco.
+A classificação final do usuário é determinada por votação majoritária. Por exemplo, se dois dos três vizinhos mais próximos forem classificados como médio risco, o usuário também será classificado como médio risco.
 
 De forma simples, o algoritmo responde à seguinte pergunta:
 
@@ -379,11 +374,7 @@ Votação majoritária
 Classificação do risco
 
 Importante: 
-A distância não é calculada apenas com os dados do usuário. O algoritmo compara o perfil do 
-usuário com cada perfil existente na base de referência. 
-Para cada comparação é calculada uma Distância Euclidiana. 
-Quanto menor essa distância, maior a semelhança entre os perfis. 
-Os perfis mais próximos são então utilizados pelo algoritmo KNN para determinar a classificação final do usuário.
+A distância não é calculada apenas com os dados do usuário. O algoritmo compara o perfil do usuário com cada perfil existente na base de referência. Para cada comparação é calculada uma Distância Euclidiana. Quanto menor essa distância, maior a semelhança entre os perfis. Os perfis mais próximos são então utilizados pelo algoritmo KNN para determinar a classificação final do usuário.
 
 */
 
@@ -445,8 +436,7 @@ var Y = [
   2, 2, 2, 2        // Classes novas - Alto Risco (14 a 17)
 ];
 
-/* "A classificação utiliza fatores de risco reconhecidos pela literatura científica e 
-por diretrizes nacionais e internacionais de saúde." Ou seja, é uma base sintética.
+/* "A classificação utiliza fatores de risco reconhecidos pela literatura científica e por diretrizes nacionais e internacionais de saúde." Ou seja, é uma base sintética.
 */ 
 /*
 BASE DE REFERÊNCIA
@@ -454,17 +444,14 @@ BASE DE REFERÊNCIA
 Os perfis são sintéticos e foram construídos com finalidade educacional
 e demonstrativa.
 
-As classificações foram atribuídas com base em fatores de risco reconhecidos na 
-literatura para doenças metabólicas e cardiovasculares.
+As classificações foram atribuídas com base em fatores de risco reconhecidos na literatura para doenças metabólicas e cardiovasculares.
 
 Esta base não substitui validação clínica.
 */
 
 // ================= NORMALIZAÇÃO =================
 /*
-	É usada a normalização Min-Max, que é uma técnica muito utilizada em Machine Learning 
-	para colocar todas as variáveis na mesma escala. Pois, temos pressão com 120 e Histórico 
-	com valor 0 ou 1 (exemplo), ou seja, temos variáveis com unidades muito diferentes.
+	É usada a normalização Min-Max, que é uma técnica muito utilizada em Machine Learning para colocar todas as variáveis na mesma escala. Pois, temos pressão com 120 e Histórico com valor 0 ou 1 (exemplo), ou seja, temos variáveis com unidades muito diferentes.
 	Se não normalizarmos os dados, a variável Pressão teria muito mais influência no cálculo da distância do que Fumante, por exemplo.
 
 Fórmula: x′ = ( x - xmin ) / (xmax - min)
@@ -525,29 +512,15 @@ function normalizar(dados){
 /*
 	O KNN utiliza distância euclidiana, por isso, é importante fazer a normalização.
 
-A distância não é calculada apenas com os dados do usuário. O algoritmo compara o 
-perfil do usuário com cada perfil existente na base de referência. 
-Para cada comparação é calculada uma Distância Euclidiana. 
-Quanto menor essa distância, maior a semelhança entre os perfis. 
-Os perfis mais próximos são então utilizados pelo algoritmo KNN para 
-determinar a classificação final do usuário.
+A distância não é calculada apenas com os dados do usuário. O algoritmo compara o perfil do usuário com cada perfil existente na base de referência. Para cada comparação é calculada uma Distância Euclidiana. Quanto menor essa distância, maior a semelhança entre os perfis. Os perfis mais próximos são então utilizados pelo algoritmo KNN para determinar a classificação final do usuário.
 
 	Outra forma, para dizer a mesma coisa,
 
-Para cada novo usuário, o algoritmo calcula a distância entre o perfil 
-informado e todos os perfis existentes na base de referência. 
-Assim, uma base com 100 perfis exige a realização de 100 cálculos de distância. 
-Após essas comparações, os perfis mais semelhantes são selecionados e utilizados 
-para determinar a classificação final por meio de votação majoritária.
+Para cada novo usuário, o algoritmo calcula a distância entre o perfil informado e todos os perfis existentes na base de referência. Assim, uma base com 100 perfis exige a realização de 100 cálculos de distância. Após essas comparações, os perfis mais semelhantes são selecionados e utilizados para determinar a classificação final por meio de votação majoritária.
 
 
 	Antes da classificação, o que é feito?
-Os dados são submetidos à normalização Min-Max. Essa técnica transforma todas as 
-variáveis para uma escala entre 0 e 1, evitando que atributos com valores 
-numéricos maiores exerçam influência desproporcional sobre o cálculo das 
-distâncias utilizado pelo algoritmo KNN. Dessa forma, idade, IMC, pressão arterial, 
-atividade física, alimentação, tabagismo e histórico familiar contribuem de 
-forma equilibrada para a classificação do risco.
+Os dados são submetidos à normalização Min-Max. Essa técnica transforma todas as variáveis para uma escala entre 0 e 1, evitando que atributos com valores numéricos maiores exerçam influência desproporcional sobre o cálculo das distâncias utilizado pelo algoritmo KNN. Dessa forma, idade, IMC, pressão arterial, atividade física, alimentação, tabagismo e histórico familiar contribuem de forma equilibrada para a classificação do risco.
 
 */
 
@@ -594,44 +567,27 @@ Histórico:  (1-0)/(1-0) = 1,000
 	​
 Quanto menor a distância mais semelhantes são os perfis.
 
-Após a normalização Min-Max, cada indivíduo passa a ser representado por um vetor com valores entre 0 e 1. 
-A similaridade entre os perfis é calculada utilizando a Distância Euclidiana. 
-O algoritmo KNN utiliza essa medida para identificar os indivíduos mais semelhantes e 
-determinar a classificação de risco do usuário.
+Após a normalização Min-Max, cada indivíduo passa a ser representado por um vetor com valores entre 0 e 1. A similaridade entre os perfis é calculada utilizando a Distância Euclidiana. O algoritmo KNN utiliza essa medida para identificar os indivíduos mais semelhantes e determinar a classificação de risco do usuário.
 
 	IMPORTANTE!!!!
 
 	A distância mede apenas semelhança entre perfis, não o nível de risco.
 
-A distância euclidiana não determina diretamente se o risco é baixo, médio ou alto. 
-Ela é utilizada apenas para medir a semelhança entre o perfil do usuário e os perfis 
-existentes na base de referência. Quanto menor a distância, mais semelhantes são os 
-perfis comparados. A classificação final depende das categorias atribuídas aos vizinhos 
-mais próximos encontrados pelo algoritmo. Dessa forma, dois usuários podem apresentar 
-distâncias igualmente pequenas, mas receber classificações diferentes caso seus 
-perfis mais semelhantes pertençam a grupos de risco distintos.
+A distância euclidiana não determina diretamente se o risco é baixo, médio ou alto. Ela é utilizada apenas para medir a semelhança entre o perfil do usuário e os perfis existentes na base de referência. Quanto menor a distância, mais semelhantes são os perfis comparados. A classificação final depende das categorias atribuídas aos vizinhos mais próximos encontrados pelo algoritmo. Dessa forma, dois usuários podem apresentar distâncias igualmente pequenas, mas receber classificações diferentes caso seus perfis mais semelhantes pertençam a grupos de risco distintos.
 
 Ou ainda,
 
-O valor da distância não representa uma medida de risco. Ele representa apenas o grau
-de semelhança entre os perfis analisados. A classificação de risco é determinada pela 
-votação das classes dos K vizinhos mais próximos, previamente classificados na base de referência.
+O valor da distância não representa uma medida de risco. Ele representa apenas o grau de semelhança entre os perfis analisados. A classificação de risco é determinada pela votação das classes dos K vizinhos mais próximos, previamente classificados na base de referência.
 */
 
 // ================= Algoritmo de Machine Learning - KNN =================
 
 /*
-O sistema procura, dentro de sua base de dados, as três pessoas mais parecidas com o usuário (K = 3). 
-Essa comparação é realizada por meio da distância euclidiana, calculada a partir dos dados
-normalizados, permitindo medir o grau de semelhança entre os perfis.
+O sistema procura, dentro de sua base de dados, as três pessoas mais parecidas com o usuário (K = 3). Essa comparação é realizada por meio da distância euclidiana, calculada a partir dos dados normalizados, permitindo medir o grau de semelhança entre os perfis.
 
-Em seguida, o algoritmo seleciona os três perfis mais próximos 
-(NN – Nearest Neighbors, ou "vizinhos mais próximos") e verifica a classificação 
-atribuída a cada um deles (baixo, médio ou alto risco).
+Em seguida, o algoritmo seleciona os três perfis mais próximos (NN – Nearest Neighbors, ou "vizinhos mais próximos") e verifica a classificação atribuída a cada um deles (baixo, médio ou alto risco).
 
-A classificação final do usuário é determinada por votação majoritária. 
-Por exemplo, se dois dos três vizinhos mais próximos forem classificados como médio risco, 
-o usuário também será classificado como médio risco.
+A classificação final do usuário é determinada por votação majoritária. Por exemplo, se dois dos três vizinhos mais próximos forem classificados como médio risco, o usuário também será classificado como médio risco.
 
 De forma simples, o algoritmo responde à seguinte pergunta:
 
@@ -717,9 +673,7 @@ function classificar(){
 var detalhesIA = 
   "<b>🔍 Explainable AI (XAI) – Inteligência Artificial Explicável</b><br><br>" +
 
-  "A Inteligência Artificial desenvolvida no AppSAU incorpora princípios de Explainable AI (XAI), 
-	permitindo visualizar os perfis mais semelhantes encontrados, as distâncias calculadas 
-	e o processo de votação utilizado pelo algoritmo KNN para gerar a classificação final.<br><br>" +
+  "A Inteligência Artificial desenvolvida no AppSAU incorpora princípios de Explainable AI (XAI), permitindo visualizar os perfis mais semelhantes encontrados, as distâncias calculadas e o processo de votação utilizado pelo algoritmo KNN para gerar a classificação final.<br><br>" +
 
   "<b>Perfis mais semelhantes encontrados:</b><br><br>";
 
@@ -776,8 +730,7 @@ detalhesIA +=
 
 /*
 Considera os 3 vizinhos mais próximos (K = 3) e contabiliza os votos de cada classe
-Esse procedimento caracteriza o algoritmo K-Nearest Neighbors (KNN), uma técnica de 
-aprendizado supervisionado baseada em similaridade entre instâncias.
+Esse procedimento caracteriza o algoritmo K-Nearest Neighbors (KNN), uma técnica de aprendizado supervisionado baseada em similaridade entre instâncias.
 Deve-se evitar K par.
 */
 
@@ -786,9 +739,7 @@ Deve-se evitar K par.
   }
 
 /*
-Então, a contagem significa que o código pega os três valores de d, dos dados de referência, 
-em que o d calculado para o usuário ficou mais próximo. 
-Depois, verifica se esses valores de referência são de baixo, médio ou alto risco.
+Então, a contagem significa que o código pega os três valores de d, dos dados de referência, em que o d calculado para o usuário ficou mais próximo. Depois, verifica se esses valores de referência são de baixo, médio ou alto risco.
 */
 
 detalhesIA +=
