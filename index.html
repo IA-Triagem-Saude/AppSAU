@@ -330,11 +330,16 @@ Ano: 2026
 
 /*
 	Explicação sobre o KNN:
-O sistema procura, dentro de sua base de dados, as três pessoas mais parecidas com o usuário (K = 3). Essa comparação é realizada por meio da distância euclidiana, calculada a partir dos dados normalizados, permitindo medir o grau de semelhança entre os perfis.
+O sistema procura, dentro de sua base de dados, as três pessoas mais parecidas com o usuário (K = 3). 
+Essa comparação é realizada por meio da distância euclidiana, calculada a partir dos dados normalizados, 
+permitindo medir o grau de semelhança entre os perfis.
 
-Em seguida, o algoritmo seleciona os três perfis mais próximos (NN – Nearest Neighbors, ou "vizinhos mais próximos") e verifica a classificação atribuída a cada um deles (baixo, médio ou alto risco).
+Em seguida, o algoritmo seleciona os três perfis mais próximos (NN – Nearest Neighbors, ou "vizinhos mais próximos") 
+e verifica a classificação atribuída a cada um deles (baixo, médio ou alto risco).
 
-A classificação final do usuário é determinada por votação majoritária. Por exemplo, se dois dos três vizinhos mais próximos forem classificados como médio risco, o usuário também será classificado como médio risco.
+A classificação final do usuário é determinada por votação majoritária. 
+Por exemplo, se dois dos três vizinhos mais próximos forem classificados como médio risco, 
+o usuário também será classificado como médio risco.
 
 De forma simples, o algoritmo responde à seguinte pergunta:
 
@@ -374,7 +379,11 @@ Votação majoritária
 Classificação do risco
 
 Importante: 
-A distância não é calculada apenas com os dados do usuário. O algoritmo compara o perfil do usuário com cada perfil existente na base de referência. Para cada comparação é calculada uma Distância Euclidiana. Quanto menor essa distância, maior a semelhança entre os perfis. Os perfis mais próximos são então utilizados pelo algoritmo KNN para determinar a classificação final do usuário.
+A distância não é calculada apenas com os dados do usuário. O algoritmo compara o perfil do 
+usuário com cada perfil existente na base de referência. 
+Para cada comparação é calculada uma Distância Euclidiana. 
+Quanto menor essa distância, maior a semelhança entre os perfis. 
+Os perfis mais próximos são então utilizados pelo algoritmo KNN para determinar a classificação final do usuário.
 
 */
 
@@ -436,7 +445,8 @@ var Y = [
   2, 2, 2, 2        // Classes novas - Alto Risco (14 a 17)
 ];
 
-/* "A classificação utiliza fatores de risco reconhecidos pela literatura científica e por diretrizes nacionais e internacionais de saúde." Ou seja, é uma base sintética.
+/* "A classificação utiliza fatores de risco reconhecidos pela literatura científica e 
+por diretrizes nacionais e internacionais de saúde." Ou seja, é uma base sintética.
 */ 
 /*
 BASE DE REFERÊNCIA
@@ -444,14 +454,17 @@ BASE DE REFERÊNCIA
 Os perfis são sintéticos e foram construídos com finalidade educacional
 e demonstrativa.
 
-As classificações foram atribuídas com base em fatores de risco reconhecidos na literatura para doenças metabólicas e cardiovasculares.
+As classificações foram atribuídas com base em fatores de risco reconhecidos na 
+literatura para doenças metabólicas e cardiovasculares.
 
 Esta base não substitui validação clínica.
 */
 
 // ================= NORMALIZAÇÃO =================
 /*
-	É usada a normalização Min-Max, que é uma técnica muito utilizada em Machine Learning para colocar todas as variáveis na mesma escala. Pois, temos pressão com 120 e Histórico com valor 0 ou 1 (exemplo), ou seja, temos variáveis com unidades muito diferentes.
+	É usada a normalização Min-Max, que é uma técnica muito utilizada em Machine Learning 
+	para colocar todas as variáveis na mesma escala. Pois, temos pressão com 120 e Histórico 
+	com valor 0 ou 1 (exemplo), ou seja, temos variáveis com unidades muito diferentes.
 	Se não normalizarmos os dados, a variável Pressão teria muito mais influência no cálculo da distância do que Fumante, por exemplo.
 
 Fórmula: x′ = ( x - xmin ) / (xmax - min)
@@ -673,7 +686,9 @@ function classificar(){
 var detalhesIA = 
   "<b>🔍 Explainable AI (XAI) – Inteligência Artificial Explicável</b><br><br>" +
 
-  "A Inteligência Artificial desenvolvida no AppSAU incorpora princípios de Explainable AI (XAI), permitindo visualizar os perfis mais semelhantes encontrados, as distâncias calculadas e o processo de votação utilizado pelo algoritmo KNN para gerar a classificação final.<br><br>" +
+  "A Inteligência Artificial desenvolvida no AppSAU incorpora princípios de Explainable AI (XAI), 
+	permitindo visualizar os perfis mais semelhantes encontrados, as distâncias calculadas 
+	e o processo de votação utilizado pelo algoritmo KNN para gerar a classificação final.<br><br>" +
 
   "<b>Perfis mais semelhantes encontrados:</b><br><br>";
 
@@ -730,7 +745,8 @@ detalhesIA +=
 
 /*
 Considera os 3 vizinhos mais próximos (K = 3) e contabiliza os votos de cada classe
-Esse procedimento caracteriza o algoritmo K-Nearest Neighbors (KNN), uma técnica de aprendizado supervisionado baseada em similaridade entre instâncias.
+Esse procedimento caracteriza o algoritmo K-Nearest Neighbors (KNN), uma técnica de 
+aprendizado supervisionado baseada em similaridade entre instâncias.
 Deve-se evitar K par.
 */
 
@@ -739,7 +755,9 @@ Deve-se evitar K par.
   }
 
 /*
-Então, a contagem significa que o código pega os três valores de d, dos dados de referência, em que o d calculado para o usuário ficou mais próximo. Depois, verifica se esses valores de referência são de baixo, médio ou alto risco.
+Então, a contagem significa que o código pega os três valores de d, dos dados de referência, 
+em que o d calculado para o usuário ficou mais próximo. 
+Depois, verifica se esses valores de referência são de baixo, médio ou alto risco.
 */
 
 detalhesIA +=
