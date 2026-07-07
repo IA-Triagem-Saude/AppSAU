@@ -375,12 +375,14 @@ Classificação do risco
 
 Importante: 
 A distância não é calculada apenas com os dados do usuário. O algoritmo compara o perfil do usuário com cada perfil existente na base de referência. Para cada comparação é calculada uma Distância Euclidiana. Quanto menor essa distância, maior a semelhança entre os perfis. Os perfis mais próximos são então utilizados pelo algoritmo KNN para determinar a classificação final do usuário.
-
 */
 
 // ================= BASE de DADOS =================
 
-/* base de dados de treinamento/referência utilizada pelo algoritmo KNN
+/* Base de referência (ou base de exemplos ou base de instâncias) utilizada pelo algoritmo KNN.
+   Os perfis são sintéticos e foram construídos para fins
+   educacionais e de demonstração.
+
  Explicação: var X é uma matriz que contém os dados de cada pessoa, 
              ou seja, cada linha são os dados de um indivíduo.
  Os dados estão na ordem:
@@ -738,6 +740,36 @@ Deve-se evitar K par.
     votos[dist[i].c]++;
   }
 
+// ======================================================
+// Determinação da classificação final
+// ======================================================
+//
+// O algoritmo KNN classifica o usuário por votação
+// majoritária entre os K vizinhos mais próximos.
+//
+// Caso ocorra empate completo (1 voto para cada classe),
+// não existe maioria estatística.
+//
+// Nessa situação o sistema informa que o resultado é
+// inconclusivo, evitando assumir automaticamente a
+// classificação de menor risco.
+// ======================================================
+
+// Verifica se houve empate completo (1 voto para cada classe)
+var empateCompleto =
+    (votos[0] == 1 &&
+     votos[1] == 1 &&
+     votos[2] == 1);
+
+var classe = 0;
+
+if(!empateCompleto){
+
+    if(votos[1] > votos[classe]) classe = 1;
+    if(votos[2] > votos[classe]) classe = 2;
+
+}
+
 /*
 Então, a contagem significa que o código pega os três valores de d, dos dados de referência, em que o d calculado para o usuário ficou mais próximo. Depois, verifica se esses valores de referência são de baixo, médio ou alto risco.
 */
@@ -750,26 +782,69 @@ detalhesIA +=
 
 detalhesIA +=
   "<b>Como a IA tomou a decisão?</b><br>" +
-  "O sistema procurou os 3 perfis mais semelhantes ao usuário, " +
+  "O sistema procurou os 3 perfis de referência mais semelhantes ao seu, " +
   "utilizando a distância euclidiana aplicada aos dados normalizados. " +
   "Em seguida, verificou a classificação desses perfis e realizou uma votação majoritária. " +
-  "A classe mais frequente foi utilizada como classificação final.";
+  "A classe mais frequente foi utilizada como classificação final (exceto quando há empate).";
 
-  var classe = 0;
-  if(votos[1] > votos[classe]) classe = 1;
-  if(votos[2] > votos[classe]) classe = 2;
+  if(empateCompleto){
 
-  var textos = ["Baixo risco","Médio risco","Alto risco"];
-  var cores = ["green","orange","red"];
+      document.getElementById("resultado").innerHTML =
+          "⚠️ Resultado inconclusivo | IMC: " + imc.toFixed(1);
 
-  document.getElementById("resultado").innerHTML =
-    textos[classe] + " | IMC: " + imc.toFixed(1);
+      document.getElementById("resultado").style.color = "#8B8000";
 
-  document.getElementById("resultado").style.color = cores[classe];
+  }else{
 
-  document.getElementById("explicacao").innerHTML =
-  "Esta análise utiliza Inteligência Artificial (Machine Learning), com base em perfis semelhantes.<br>" +
-  "Procure um profissional de saúde para uma avaliação completa.";
+      var textos = [
+        	"Baixo risco",
+        	"Médio risco",
+        	"Alto risco"
+      ];
+
+    	var cores = [
+        	"green",
+        	"orange",
+        	"red"
+      ];
+
+      document.getElementById("resultado").innerHTML =
+        textos[classe] + " | IMC: " + imc.toFixed(1);
+
+      document.getElementById("resultado").style.color = cores[classe];
+
+  }
+
+/*
+TRATAMENTO DE EMPATES
+
+O algoritmo KNN utiliza votação majoritária entre os K vizinhos
+mais próximos.
+
+Quando ocorre empate completo (1 voto para cada classe),
+não existe uma classificação predominante.
+
+Nessa situação, a IA informa explicitamente que o
+resultado é inconclusivo, evitando assumir automaticamente
+a classificação de menor risco.
+
+Essa abordagem segue princípios de transparência e
+Explainable AI (XAI), permitindo ao usuário compreender
+que o modelo apresentou incerteza na decisão.
+*/
+
+if(empateCompleto){
+
+    document.getElementById("explicacao").innerHTML =
+    "<b>Resultado inconclusivo:</b> Foi identificado empate entre as classes dos três perfis mais semelhantes da base de referência (1 voto para cada classe). Como não houve maioria na votação, o algoritmo não conseguiu definir uma classificação predominante. Recomenda-se uma avaliação complementar por um profissional de saúde. Os detalhes da análise podem ser consultados no painel <b>🔍 Detalhes da classificação (IA)</b>.";
+
+}else{
+
+    document.getElementById("explicacao").innerHTML =
+    "Esta análise utiliza Inteligência Artificial (Machine Learning), com base em perfis semelhantes.<br>" +
+    "Para uma avaliação completa, procure um profissional de saúde.";
+
+}
 
     // Para mostrar os resultados da análise:
   document.getElementById("detalhesIA").innerHTML = detalhesIA;
